@@ -2,8 +2,10 @@ const express = require('express');
 const fs = require('fs');
 const util = require("util");
 const app = express();
+///////////////////////////////////////////ajouter la librairie socket.io
 const server = require('http').createServer(app);
 const io = require('./mes_modules/chat_socket').listen(server);
+////////////////////////////////////////////////////////////////////
 const bodyParser= require('body-parser');
 const MongoClient = require('mongodb').MongoClient; // le pilote MongoDB
 const ObjectID = require('mongodb').ObjectID;
@@ -30,14 +32,18 @@ app.use(i18n.init);
 let db // variable qui contiendra le lien sur la BD
 
 MongoClient.connect('mongodb://127.0.0.1:27017', (err, database) => {
- if (err) return console.log(err)
- db = database.db('carnet_adresse')
-console.log('connexion à la BD')
-// lancement du serveur Express sur le port 8081
- app.listen(8081, (err) => {
- 	if (err) console.log(err)
- console.log('connexion à la BD et on écoute sur le port 8081')
- })
+	
+	 if (err) return console.log(err)
+	 db = database.db('carnet_adresse')
+	 console.log('connexion à la BD')
+
+	// lancement du serveur Express sur le port 8081
+	 server.listen(8081, (err) => {
+
+	 	if (err) console.log(err)
+		console.log('connexion à la BD et on écoute sur le port 8081')
+
+	 })
 })
 
 
@@ -81,6 +87,7 @@ app.get('/adresse', function (req, res) {
  res.render('adresse.ejs', {adresses: resultat})   
   });
 })
+
 //////////////////////////////////////////  Route Rechercher
 app.post('/rechercher',  (req, res) => {
 
